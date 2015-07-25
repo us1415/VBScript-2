@@ -1,0 +1,15 @@
+dim fso, Desktop
+set fso = CreateObject("Scripting.FileSystemObject")
+set Desktop = fso.Getfolder("C:\Users\rssimari\Desktop\Functional Scripts")
+
+For Each File In Desktop.files
+	If Right(file.name,4) = ".cmd" Then
+	newFileName = Replace(file.name, ".cmd", ".txt")
+	file.name = newFileName
+	End If
+	If Right(file.name,4) = ".vbs" Then
+	newFileName = Replace(file.name, ".vbs", ".txt")
+	file.name = newFileName
+	End If
+ Next
+ 

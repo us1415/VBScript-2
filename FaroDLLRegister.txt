@@ -1,0 +1,38 @@
+'=========================================================='
+'
+' VB Script Source File -- Faro/AutoDesk Recap .dll registration
+'
+' Author: Robert Simari, Burns & McDonnell
+'
+' Comments: Script takes a while probably due to the amount  of folders
+' 			in the C:\Windows\WinSxS path, but it may need further optimization
+'
+'==========================================================='
+
+Set fso = CreateObject("Scripting.FileSystemObject")
+
+CopyUpdater fso.GetFolder("C:\Windows\WinSxS")
+
+dim Path, newestversion
+
+Sub CopyUpdater(fldr)	
+	For Each f In fldr.Files
+		If (f.Name) = "iQOpen.dll" Then
+			b = Left(Right(f.path, 42),9) 'extracts version number from path
+			versionnumber = Replace(b, ".", "") 'all periods removed
+			If versionnumber > newestversion Then ' compares the date of the most recently found version to the previously newest version
+				newestversion = versionnumber  ' records the new newest version
+				Path = f.Path 'tracks the path of the newly found newest version
+			End If
+		End If
+	Next
+	For Each sf In fldr.SubFolders
+		CopyUpdater sf
+	Next
+End Sub
+Set WshShell = WScript.CreateObject("WScript.Shell")  'runs regsvr32 cmd with the path found from Sub (above)
+	WshShell.Run "cmd.exe /c"
+	WScript.Sleep 500
+	WshShell.SendKeys "regsvr32 " & Path
+	WshShell.SendKeys "{Enter}"
+msgbox Path & "   Registered!", 0,"FaroDLL.vbs"

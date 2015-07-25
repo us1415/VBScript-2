@@ -1,0 +1,32 @@
+'this is an alternative and more robust way of running the EdgeWise_I.cmd
+'
+' author: Robert Simari, Burns and McDonnell
+'
+'
+
+Set fso = CreateObject("Scripting.FileSystemObject")
+CopyUpdater fso.GetFolder("C:\Program Files\Autodesk")
+
+Sub CopyUpdater(fldr)
+	dim regexvalid, regexnumber
+	set regexvalid = new regexp
+	set regexnumber = new regexp
+
+	regexvalid.global = true
+	regexvalid.ignorecase = true
+	regexnumber.global = true
+	regexnumber.ignorecase = true
+
+	regexnumber.pattern = "20\B" 'works for all Revit 20__ folders 
+	regexvalid.pattern = "Revit" ' regex for the pattern of the target folder name
+		For each subfldr in fldr.SubFolders
+			if regexnumber.test(subfldr) And regexvalid.test(subfldr) then
+				For each f in subfldr.files
+					If f.name = "Revit.exe" Then
+						fso.copyfile "\\altimg\softdist\clearedge\edgewise\_configuration\sntlconfig.xml",subfldr.path
+					End If
+				Next
+			End If
+		Next
+End Sub
+

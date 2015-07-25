@@ -1,0 +1,14 @@
+'====================================================='
+' This program puts the BMCD Templates into the users Microsoft Word Application'
+'
+'
+' Author: Robert Simari, BMCD
+'
+'====================================================='
+
+Dim fso, objNet
+set fso = CreateObject("Scripting.FileSystemObject")
+set objNet = CreateObject("Wscript.Network")
+If fso.folderexists("C:\Users\" & objNet.username & "\AppData\Roaming\Microsoft\Templates") Then
+	fso.GetFolder("\\altimg\softdist\BMcD\Templates\").Copy "C:\Users\" & objNet.username & "\AppData\Roaming\Microsoft\Templates"
+End If
