@@ -23,7 +23,7 @@ Sub CopyUpdater(fldr)
 			if regexnumber.test(subfldr) And regexvalid.test(subfldr) then
 				For each f in subfldr.files
 					If f.name = "Revit.exe" Then
-						fso.copyfile "\\altimg\softdist\clearedge\edgewise\_configuration\sntlconfig.xml",subfldr.path
+						fso.copyfile "(Removed for security Reasons)",subfldr.path
 					End If
 				Next
 			End If
